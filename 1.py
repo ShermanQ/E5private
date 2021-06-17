@@ -46,14 +46,16 @@ def main():
     'Authorization':access_token,
     'Content-Type':'application/json'
     }
+    mail = '{"message":{"subject":"Meet for lunch?","body":{"contentType":"Text","content":"The new cafeteria is open."},"toRecipients":[{"emailAddress":{"address":"sherman@shermantestapi.onmicrosoft.com"}}]}}'
     try:
-        if req.get(r'https://graph.microsoft.com/v1.0/me/drive/root',headers=headers).status_code == 200:
+
+        if req.get(r'https://graph.microsoft.com/v1.0/me/drive/root/children',headers=headers).status_code == 200:
             num1+=1
             print("1调用成功"+str(num1)+'次')
-        if req.get(r'https://graph.microsoft.com/v1.0/me/drive',headers=headers).status_code == 200:
+        if req.get(r'https://graph.microsoft.com/v1.0/me/drive/recent',headers=headers).status_code == 200:
             num1+=1
             print("2调用成功"+str(num1)+'次')
-        if req.get(r'https://graph.microsoft.com/v1.0/drive/root',headers=headers).status_code == 200:
+        if req.get(r'https://graph.microsoft.com/v1.0/drive/sharedWithMe',headers=headers).status_code == 200:
             num1+=1
             print('3调用成功'+str(num1)+'次')
         if req.get(r'https://graph.microsoft.com/v1.0/users ',headers=headers).status_code == 200:
@@ -77,10 +79,13 @@ def main():
         if req.get(r'https://graph.microsoft.com/v1.0/me/mailFolders',headers=headers).status_code == 200:
             num1+=1
             print('9调用成功'+str(num1)+'次')
+        if req.post(r'https://graph.microsoft.com/v1.0/me/sendMail',data=mail,headers=headers).status_code==202:
+            print("mail send success!")
         if req.get(r'https://graph.microsoft.com/v1.0/me/outlook/masterCategories',headers=headers).status_code == 200:
             num1+=1
             print('10调用成功'+str(num1)+'次')
             print('此次运行时间为 :', localtime)
+            
     except:
         print("pass")
         pass
