@@ -46,7 +46,7 @@ def main():
     'Authorization':access_token,
     'Content-Type':'application/json'
     }
-    mail = '{"message":{"subject":"Meet for lunch?","body":{"contentType":"Text","content":"The new cafeteria is open."},"toRecipients":[{"emailAddress":{"address":"sherman@shermantestapi.onmicrosoft.com"}}]}}'
+    #mail = '{"message":{"subject":"Meet for lunch?","body":{"contentType":"Text","content":"The new cafeteria is open."},"toRecipients":[{"emailAddress":{"address":"sherman@shermantestapi.onmicrosoft.com"}}]}}'
     try:
 
         if req.get(r'https://graph.microsoft.com/v1.0/me/drive/root/children',headers=headers).status_code == 200:
