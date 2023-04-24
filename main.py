@@ -42,7 +42,7 @@ def updateToken(refresh_token):
 
     PAT = os.environ.get('token')
 
-    # 要更新的 secret 的名称
+    # update secret_name
     secret_name = 'REFRESH_TOKEN'
 
     # 要更新的 secret 的值
