@@ -33,6 +33,7 @@ jobs:
         id: ${{ secrets.CONFIG_ID }}
         secret: ${{ secrets.CONFIG_KEY }}
         token: ${{secrets.GPT_TOKEN}}
+        refresh_token: ${{REFRESH_TOKEN}}
       run: |    
         python main.py
         echo `date +"%Y-%m-%d %H:%M:%S"` begin > time.log

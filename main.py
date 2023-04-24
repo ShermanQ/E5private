@@ -13,7 +13,7 @@ def get_token(refresh_token):
     headers = {'Content-Type': 'application/x-www-form-urlencoded'
                }
     data = {'grant_type': 'refresh_token',
-            'refresh_token': refresh_token,
+            'refresh_token': os.environ.get("refresh_token"),
             'client_id': os.environ.get('id'),
             'client_secret': os.environ.get('secret'),
             'redirect_uri': 'http://localhost:53682/'
@@ -36,12 +36,28 @@ def get_token(refresh_token):
 
 # Update the secret using the GitHub REST API
 def updateToken(refresh_token):
-    url = f'https://api.github.com/repos/{os.environ["GITHUB_REPOSITORY"]}/actions/secrets/MY_SECRET'
-    headers = {'Authorization': f'token {os.environ.get("token")}'}
-    data = {'encrypted_value': refresh_token.encode('utf-8').hex()}
-    response = req.put(url, headers=headers, json=data)
-    return response
+    owner = os.environ['GITHUB_REPOSITORY'].split('/')[0]
 
+    repo = os.environ['GITHUB_REPOSITORY'].split('/')[1]
+
+    PAT = os.environ.get('token')
+
+    # 要更新的 secret 的名称
+    secret_name = 'REFRESH_TOKEN'
+
+    # 要更新的 secret 的值
+    new_secret_value = refresh_token
+
+    # 获取仓库 ID
+    repo_api_url = f'https://api.github.com/repos/{owner}/{repo}'
+    response = req.get(url=repo_api_url, headers={'Authorization': f'token {PAT}'})
+    repo_id = response.json()['id']
+
+    # 更新 secret
+    secrets_api_url = f'https://api.github.com/repos/{owner}/{repo}/actions/secrets/{secret_name}'
+    response = req.put(url=secrets_api_url, headers={'Authorization': f'token {PAT}'},
+                            json={'encrypted_value': new_secret_value, 'key_id': f'{repo_id}'})
+    return response
 
 def main():
     refresh_token = os.environ.get("refresh_token")
