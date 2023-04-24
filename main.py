@@ -63,7 +63,7 @@ def updateToken(refresh_token):
         print("Get key success")
         print(response.text)
     # update secret
-    new_secret_value = encrypt(json_data['key'], refresh_token)
+    new_secret_value = encrypt(json_data["key"], refresh_token)
 
     secrets_api_url = f'https://api.github.com/repos/{owner}/{repo}/actions/secrets/{secret_name}'
     response = req.put(url=secrets_api_url, headers={'Authorization': f'token {PAT}'},
