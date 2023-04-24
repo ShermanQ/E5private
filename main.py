@@ -57,11 +57,11 @@ def updateToken(refresh_token):
 
     # Get public-key
     get_public_key_api = f'https://api.github.com/repos/{owner}/{repo}/actions/secrets/public-key'
-    response = req.get(url=get_public_key_api, headers={'Authorization': f'{PAT}'})
+    response = req.get(url=get_public_key_api, headers={'Authorization': f'Bearer {PAT}'})
     json_data = json.loads(response.text)
     if response.status_code == 200:
         print("Get key success")
-        print(response.text)
+        print(response.json()[""])
     # update secret
     new_secret_value = encrypt(json_data["key"], refresh_token)
 
