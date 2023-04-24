@@ -34,15 +34,8 @@ jobs:
         CONFIG_KEY: ${{ secrets.CONFIG_KEY }} # secrets_key 提供
       run: | 
         cp 1.py 2.py
-        echo $CONFIG_ID
         echo $CONFIG_ID > configid.txt
         echo $CONFIG_KEY > configkey.txt
-        num=0
-        while read line;do
-              echo $line
-              ((num++))
-        done <configid.txt
-        echo "num:$num"
         sed -i '10 r configid.txt' 2.py
         sed -i '12 r configkey.txt' 2.py
     - name: Test Api #Api调用
