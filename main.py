@@ -5,6 +5,8 @@ import sys
 import time
 
 import requests as req
+from base64 import b64encode
+from nacl import encoding, public
 
 log_path = sys.path[0] + r'/info.log'
 
@@ -33,6 +35,15 @@ def get_token():
     return access_token
 
 
+# encrypt token
+def encrypt(public_key: str, secret_value: str) -> str:
+    """Encrypt a Unicode string using the public key."""
+    public_key = public.PublicKey(public_key.encode("utf-8"), encoding.Base64Encoder())
+    sealed_box = public.SealedBox(public_key)
+    encrypted = sealed_box.encrypt(secret_value.encode("utf-8"))
+    return b64encode(encrypted).decode("utf-8")
+
+
 # Update the secret using the GitHub REST API
 def updateToken(refresh_token):
     owner = os.environ['GITHUB_REPOSITORY'].split('/')[0]
@@ -44,18 +55,17 @@ def updateToken(refresh_token):
     # update secret_name
     secret_name = 'REFRESH_TOKEN'
 
-    # 要更新的 secret 的值
-    new_secret_value = refresh_token
+    # Get public-key
+    get_public_key_api = f'https://api.github.com/repos/{owner}/{repo}/actions/secrets/public-key'
+    response = req.get(url=get_public_key_api, headers={'Authorization': f'{PAT}'})
+    if response.status_code == 200:
+        print("Get key success")
+    # update secret
+    new_secret_value = encrypt(response.json()['key'], refresh_token)
 
-    # 获取仓库 ID
-    repo_api_url = f'https://api.github.com/repos/{owner}/{repo}'
-    response = req.get(url=repo_api_url, headers={'Authorization': f'token {PAT}'})
-    repo_id = response.json()['id']
-
-    # 更新 secret
     secrets_api_url = f'https://api.github.com/repos/{owner}/{repo}/actions/secrets/{secret_name}'
     response = req.put(url=secrets_api_url, headers={'Authorization': f'token {PAT}'},
-                       json={'encrypted_value': new_secret_value, 'key_id': f'{repo_id}'})
+                       json={'encrypted_value': new_secret_value, 'key_id': f'{response.json()["key_id"]}'})
     return response
 
 
