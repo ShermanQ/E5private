@@ -60,6 +60,7 @@ def updateToken(refresh_token):
     response = req.get(url=get_public_key_api, headers={'Authorization': f'{PAT}'})
     if response.status_code == 200:
         print("Get key success")
+        print(response.text)
     # update secret
     new_secret_value = encrypt(response.json()['key'], refresh_token)
 
