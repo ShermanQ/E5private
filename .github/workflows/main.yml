@@ -28,6 +28,7 @@ jobs:
     - name: Install requests
       run: |
         pip install requests
+        pip install pynacl
     - name: read config from secrets
       env: 
         id: ${{ secrets.CONFIG_ID }}
