@@ -61,7 +61,6 @@ def updateToken(refresh_token):
     json_data = json.loads(response.text)
     if response.status_code == 200:
         print("Get key success")
-        print(response.json()[""])
     # update secret
     new_secret_value = encrypt(json_data["key"], refresh_token)
 
