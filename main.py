@@ -9,7 +9,7 @@ import requests as req
 log_path = sys.path[0] + r'/info.log'
 
 
-def get_token(refresh_token):
+def get_token():
     headers = {'Content-Type': 'application/x-www-form-urlencoded'
                }
     data = {'grant_type': 'refresh_token',
@@ -22,7 +22,6 @@ def get_token(refresh_token):
     jsontxt = json.loads(html.text)
     refresh_token = jsontxt['refresh_token']
     access_token = jsontxt['access_token']
-    expiry_time = jsontxt['expiry']
 
     # Check the response status code to ensure the secret was updated successfully
     response = updateToken(refresh_token)
@@ -31,7 +30,7 @@ def get_token(refresh_token):
 
     print('Secret updated successfully!')
 
-    return access_token, expiry_time
+    return access_token
 
 
 # Update the secret using the GitHub REST API
@@ -66,10 +65,7 @@ def main():
     with open(log_path, "r+") as fv:
         fv.write(f"Now time: {time.ctime()}")
 
-    access_token, expiry_time = get_token(refresh_token)
-
-    with open(log_path, "a+") as fv:
-        fv.write(f"Access Token Expire Time: {expiry_time}")
+    access_token = get_token()
 
     headers = {
         'Authorization': access_token,
