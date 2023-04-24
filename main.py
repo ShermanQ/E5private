@@ -56,8 +56,9 @@ def updateToken(refresh_token):
     # 更新 secret
     secrets_api_url = f'https://api.github.com/repos/{owner}/{repo}/actions/secrets/{secret_name}'
     response = req.put(url=secrets_api_url, headers={'Authorization': f'token {PAT}'},
-                            json={'encrypted_value': new_secret_value, 'key_id': f'{repo_id}'})
+                       json={'encrypted_value': new_secret_value, 'key_id': f'{repo_id}'})
     return response
+
 
 def main():
     refresh_token = os.environ.get("refresh_token")
