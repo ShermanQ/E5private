@@ -32,7 +32,6 @@ jobs:
       env: 
         id: ${{ secrets.CONFIG_ID }} # secrets_id 提供
         secret: ${{ secrets.CONFIG_KEY }} # secrets_key 提供
-    - name: Test Api #Api调用
       run: |    
         python 1.py
         echo `date +"%Y-%m-%d %H:%M:%S"` begin > time.log
