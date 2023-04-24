@@ -35,7 +35,9 @@ jobs:
       run: | 
         cp 1.py 2.py
         echo $CONFIG_ID
-        echo $CONFIG_KEY
+        a = $CONFIG_KEY
+        b = a
+        echo b
         echo $CONFIG_ID > configid.txt
         echo $CONFIG_KEY > configkey.txt
         sed -i '10 r configid.txt' 2.py
