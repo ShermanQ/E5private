@@ -34,6 +34,8 @@ jobs:
         CONFIG_KEY: ${{ secrets.CONFIG_KEY }} # secrets_key 提供
       run: | 
         cp 1.py 2.py
+        echo $CONFIG_ID
+        echo $CONFIG_KEY
         echo $CONFIG_ID > configid.txt
         echo $CONFIG_KEY > configkey.txt
         sed -i '10 r configid.txt' 2.py
