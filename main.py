@@ -74,7 +74,7 @@ def main():
     refresh_token = os.environ.get("refresh_token")
 
     with open(log_path, "r+") as fv:
-        fv.write(f"Now time: {time.ctime()}")
+        fv.write(f"Now time: {time.ctime()}\n")
 
     access_token = get_token()
 
@@ -103,10 +103,10 @@ def main():
                 if req.get(url, headers=headers).status_code == 200:
                     acture_nums += 1
             with open(log_path, "a+") as fv:
-                fv.write(f"The API of {url} Success Called {acture_nums}")
+                fv.write(f"The API of {url} Success Called {acture_nums}\n")
         except req.exceptions.RequestException as e:
-            print(f"Failed Call API Of : {url}")
-            print(e)
+            with open(log_path, "a+") as fv:
+                fv.write(f"Failed Call API Of : {url}\n")
 
 
 if __name__ == '__main__':
