@@ -39,8 +39,8 @@ jobs:
         python main.py
     - name: commit
       run: |
-        git config --global user.email test@outlook.com
-        git config --global user.name test
+        git config --global user.email  "qiuwentao0823@gmail.com"
+        git config --global user.name "ShermanQ"
         git add .
         git commit -m "update new token" -a
     - name: Push changes
